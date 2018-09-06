@@ -234,38 +234,38 @@ function superpwa_delete_sw() {
 
 /**
  * Add images from offline page to filesToCache
- * 
- * If the offlinePage set by the user contains images, they need to be cached during sw install. 
+ *
+ * If the offlinePage set by the user contains images, they need to be cached during sw install.
  * For most websites, other assets (css, js) would be same as that of startPage which would be cached
  * when user visits the startPage the first time. If not superpwa_sw_files_to_cache filter can be used.
- * 
+ *
  * @param (string) $files_to_cache Comma separated list of files to cache during service worker install
- * 
+ *
  * @return (string) Comma separated list with image src's appended to $files_to_cache
- * 
+ *
  * @since 1.9
  */
 function superpwa_offline_page_images( $files_to_cache ) {
-	
+
 	// Get Settings
 	$settings = superpwa_get_settings();
-	
+
 	// Retrieve the post
 	$post = get_post( $settings['offline_page'] );
-	
+
 	// Return if the offline page is set to default
 	if( $post === NULL ) {
 		return $files_to_cache;
 	}
-	
+
 	// Match all images
 	preg_match_all( '/<img[^>]+src="([^">]+)"/', $post->post_content, $matches );
-	
+
 	// $matches[1] will be an array with all the src's
 	if( ! empty( $matches[1] ) ) {
 		return superpwa_httpsify( $files_to_cache . ', \'' . implode( '\', \'', $matches[1] ) . '\'' );
 	}
-	
+
 	return $files_to_cache;
 }
 add_filter( 'superpwa_sw_files_to_cache', 'superpwa_offline_page_images' );

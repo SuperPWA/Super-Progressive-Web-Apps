@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function superpwa_manifest( $arg = 'src' ) {
 	
-	$manifest_filename = 'superpwa-manifest' . superpwa_multisite_filename_postfix() . '.json';
+	$manifest_filename = apply_filters( 'superpwa_manifest_filename', 'superpwa-manifest' . superpwa_multisite_filename_postfix() . '.json', $arg );
 	
 	switch( $arg ) {
 		
@@ -50,7 +50,7 @@ function superpwa_manifest( $arg = 'src' ) {
 		// Link to manifest
 		case 'src':
 		default:
-			return trailingslashit( network_site_url() ) . $manifest_filename;
+			return trailingslashit( get_blog_details('domain', false) ) . $manifest_filename;
 			break;
 	}
 }
